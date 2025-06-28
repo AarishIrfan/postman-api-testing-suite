@@ -106,11 +106,6 @@ npx newman run "PostAir Weather API - Baseline Test Suite.postman_collection.jso
   --reporters cli,html \
   --reporter-html-export "newman-report.html"
 ```
-
-### View HTML Report
-
-* Open `newman-report.html` in any browser
-
 ---
 
 ## GitHub Actions CI Setup
