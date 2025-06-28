@@ -1,3 +1,10 @@
+
+
+[![CI Status](https://github.com/AarishIrfan/postman-api-testing-suite/actions/workflows/newman-ci.yml/badge.svg)](https://github.com/AarishIrfan/postman-api-testing-suite/actions)
+[![Release](https://img.shields.io/github/v/release/AarishIrfan/postman-api-testing-suite)](https://github.com/AarishIrfan/postman-api-testing-suite/releases)
+
+
+
 This repository demonstrates a complete setup for API testing using Postman, Newman CLI, CSV-based data-driven testing, HTML reporting, and CI automation with GitHub Actions. It is built around a weather API test suite and includes reusable scripts following best practices in software quality assurance.
 
 ---
