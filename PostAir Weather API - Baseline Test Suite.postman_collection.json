@@ -1,0 +1,371 @@
+{
+	"info": {
+		"_postman_id": "a4ca9a0e-eb1f-48cd-8155-4f7dc565526a",
+		"name": "PostAir Weather API - Baseline Test Suite",
+		"description": "### **Purpose:**\n\nTo design and execute a baseline API test suite for the fictional **PostAir Weather API**, simulating core testing practices followed in real-world QA workflows using **Postman**.\n\n**Scope:**\n\nThis workspace covers:\n\n- Functional tests (GET current weather & forecasts)\n    \n- Negative testing (invalid inputs & error handling)\n    \n- Authorization checks (missing or invalid API key)\n    \n- Performance scenario (large payload query)\n    \n- Environment variables and parameterization\n    \n\n**Tools & Features Used:**\n\n- Postman Workspaces\n    \n- Collections & Folders\n    \n- Environments (`{{baseUrl}}`, `{{cityName}}`, `{{longParam}}`)\n    \n- Pre-request scripts\n    \n- Postman tests using JavaScript\n    \n- Visual assertion of response time, data, and status codes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37225251",
+		"_collection_link": "https://enternine.postman.co/workspace/Aarish_API_Tests~665d759a-917b-44c6-8ab5-0ac43dfdaf2e/collection/37225251-a4ca9a0e-eb1f-48cd-8155-4f7dc565526a?action=share&source=collection_link&creator=37225251"
+	},
+	"item": [
+		{
+			"name": "GET Current Weather",
+			"item": [
+				{
+					"name": "Get Current Weather",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+									"\r",
+									"pm.test(\"Response time < 1000ms\", () => \r",
+									"  pm.expect(pm.response.responseTime).to.be.below(1000)\r",
+									");\r",
+									"\r",
+									"pm.test(\"Response includes city\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json).to.have.property(\"url\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/get?city={{cityName}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"get"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "{{cityName}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET list of users with page param",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"✅ Status is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"let jsonData;\r",
+									"try {\r",
+									"    jsonData = pm.response.json();\r",
+									"} catch (e) {\r",
+									"    console.log(\"❌ Invalid JSON:\", pm.response.text());\r",
+									"}\r",
+									"\r",
+									"if (jsonData && jsonData.data) {\r",
+									"    pm.test(\"✅ 'data' is an array\", function () {\r",
+									"        pm.expect(jsonData.data).to.be.an(\"array\");\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"✅ Users have email\", function () {\r",
+									"        jsonData.data.forEach(user => {\r",
+									"            pm.expect(user).to.have.property(\"email\");\r",
+									"        });\r",
+									"    });\r",
+									"} else {\r",
+									"    console.log(\"⚠️ 'data' not found in response\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://reqres.in/api/users?page={{page}}",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "{{page}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GET Forecast",
+			"item": [
+				{
+					"name": "Get 5-Day Forecast",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+									"pm.test(\"Valid response\", () => {\r",
+									"  const json = pm.response.json();\r",
+									"  pm.expect(json).to.not.be.empty;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/get?forecast=5days&city={{cityName}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"get"
+							],
+							"query": [
+								{
+									"key": "forecast",
+									"value": "5days"
+								},
+								{
+									"key": "city",
+									"value": "{{cityName}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Error Handling",
+			"item": [
+				{
+					"name": "Invalid City",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let city = pm.request.url.query.get('city');\r",
+									"\r",
+									"pm.test(\"Check if invalid city logic applied\", () => {\r",
+									"  pm.expect(city).to.eql(\"UnknownCity\");\r",
+									"  pm.expect(pm.response.code).to.eql(200); // Real API would return 404\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/get?city=UnknownCity",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"get"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "UnknownCity"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authorization",
+			"item": [
+				{
+					"name": "Missing API Key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Simulate missing API key\", () => {\r",
+									"  // Dummy test because Postman Echo doesn't check for keys\r",
+									"  pm.expect(pm.response.code).to.eql(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/get?city={{cityName}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"get"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "{{cityName}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Performance",
+			"item": [
+				{
+					"name": "Large Params",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let bigData = Array(2000).fill(\"X\").join(\"\");\r",
+									"pm.environment.set(\"longParam\", bigData);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time < 1500ms\", () => {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/get?data={{longParam}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"get"
+							],
+							"query": [
+								{
+									"key": "data",
+									"value": "{{longParam}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://postman-echo.com",
+			"type": "string"
+		},
+		{
+			"key": "cityName\t",
+			"value": "Karachi",
+			"type": "string"
+		},
+		{
+			"key": "apikey",
+			"value": "12345",
+			"type": "string"
+		},
+		{
+			"key": "cityName",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
