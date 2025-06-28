@@ -1,95 +1,87 @@
-Thank you, Aarish. Based on your strict preferences:
-
-* **No emojis**
-* **No fluff or informal language**
-* **Official and instructional tone**
-* **Comprehensive documentation reflecting all your work**
-
-Here is your **final, structured, professional `README.md`**, ready to be copy-pasted or committed directly:
+This repository demonstrates a complete setup for API testing using Postman, Newman CLI, CSV-based data-driven testing, HTML reporting, and CI automation with GitHub Actions. It is built around a weather API test suite and includes reusable scripts following best practices in software quality assurance.
 
 ---
 
-```markdown
-# Postman API Testing Suite
+## Project Goals
 
-This repository contains a complete API test automation setup using Postman, Newman CLI, data-driven testing via CSV, HTML report generation, and CI/CD integration with GitHub Actions. The suite tests the PostAir Weather API and follows software testing best practices for maintainability, reusability, and reliability.
-
----
-
-## Project Objectives
-
-- Validate multiple endpoints of a sample weather API.
-- Automate test execution using Newman and GitHub Actions.
-- Enhance test maintainability through modular and reusable scripts.
-- Support data-driven testing using CSV files.
-- Integrate CI to auto-run collections and generate reports.
+- Automate testing of RESTful API endpoints
+- Use CSV iteration for efficient test coverage
+- Validate responses with assertions
+- Enable reusable logic via Postman package library
+- Integrate testing with GitHub Actions CI
 
 ---
 
-## Repository Structure
+## Repository Contents
 
 ```
 
 .
-├── .github/workflows/                # GitHub Actions configuration
-│   └── newman-ci.yml                 # Workflow file for automated test runs
-├── PostAir Weather API - Baseline Test Suite.postman\_collection.json  # Collection file
-├── weather\_test\_data.csv            # Input data for multiple test iterations
-├── newman-report.html               # HTML report output by Newman
-├── reports/                         # Folder to store report artifacts
-├── postman-cli-reports/            # Directory for structured report output
-├── node\_modules/                    # Node.js dependencies
-├── package.json                     # Node.js project configuration
-├── package-lock.json                # Dependency lock file
-└── README.md                        # Project documentation
+├── .github/workflows/                 # GitHub Actions CI configuration
+│   └── newman-ci.yml                 # Workflow for automated test execution
+├── PostAir Weather API - Baseline Test Suite.postman\_collection.json
+├── weather\_test\_data.csv             # Test input data
+├── newman-report.html                # Newman HTML report (example output)
+├── reports/                          # Optional folder to store reports
+├── postman-cli-reports/              # Additional output location (if needed)
+├── package.json                      # Project dependencies
+├── package-lock.json
+└── README.md                         # Project documentation
 
 ````
 
 ---
 
-## Features Implemented
+## Features
 
-### 1. Postman Collection Testing
-- Tests for weather data retrieval, error handling, authorization, and performance.
-- Uses assertions for status codes, response structure, and execution time.
-- Negative test cases such as missing parameters and invalid city names.
+### Collection Tests
+- HTTP GET requests for weather data
+- Assertion checks for:
+  - Status codes
+  - Response time
+  - JSON structure
+  - Error handling
+- Includes test for invalid city input and missing API key
 
-### 2. Data-Driven Testing
-- Data supplied through `weather_test_data.csv`.
-- Tests executed in multiple iterations with different inputs using Collection Runner and Newman.
+### Data-Driven Testing
+- Uses `weather_test_data.csv`
+- Runs tests for multiple cities through iteration
+- Validates logic for different use cases with one collection
 
-### 3. Postman Package Library (Reusable Scripts)
-- Applied DRY (Don’t Repeat Yourself) principle.
-- Exported shared logic using `module.exports`.
-- Imported logic in other scripts using `pm.require`.
+### Reusable Script Modules
+- Created centralized utility logic using `module.exports`
+- Imported using `pm.require()` across multiple requests
+- Follows the DRY (Don't Repeat Yourself) principle
+- Allows centralized update for shared logic
 
-### 4. HTML Reporting
-- Reports generated using `newman-reporter-html`.
-- Exported to `newman-report.html` for browser view.
+### Newman CLI Integration
+- Automates local test execution via `npx newman run`
+- Generates HTML report with `newman-reporter-html`
+- Suitable for manual or scheduled testing workflows
 
-### 5. Continuous Integration (CI)
-- CI/CD workflow configured with GitHub Actions.
-- Workflow runs tests on every `main` branch push.
-- Uses `newman` in CI environment with outputs in CLI and HTML.
+### GitHub Actions CI
+- `.github/workflows/newman-ci.yml` triggers test on push
+- Runs collection with data file on GitHub-hosted runner
+- Verifies results and logs test run output
+- Helps detect failures on every commit or PR
 
 ---
 
-## Setup Instructions
+## How to Use
 
-### Step 1: Clone the Repository
-
+### Clone the Repository
 ```bash
 git clone https://github.com/AarishIrfan/postman-api-testing-suite.git
 cd postman-api-testing-suite
 ````
 
-### Step 2: Install Required Packages
+### Install Dependencies
 
 ```bash
 npm install newman newman-reporter-html
 ```
 
-### Step 3: Run Tests Locally
+### Run Tests Locally
 
 ```bash
 npx newman run "PostAir Weather API - Baseline Test Suite.postman_collection.json" \
@@ -98,78 +90,61 @@ npx newman run "PostAir Weather API - Baseline Test Suite.postman_collection.jso
   --reporter-html-export "newman-report.html"
 ```
 
-### Step 4: View the HTML Report
+### View HTML Report
 
-Open `newman-report.html` in any browser:
-
-```bash
-start newman-report.html       # For Windows
-open newman-report.html        # For macOS
-```
+* Open `newman-report.html` in any browser
 
 ---
 
-## GitHub Actions: CI/CD Workflow
+## GitHub Actions CI Setup
 
-The `.github/workflows/newman-ci.yml` file is configured to:
+This project includes a workflow to run the tests on every push to `main`.
 
-* Trigger on every push to `main`
-* Run Postman tests using Newman
-* Use the data file and generate a fresh report
-* Ensure consistency across environments
+**Workflow File:** `.github/workflows/newman-ci.yml`
+
+* Uses `actions/checkout` and `node@20`
+* Installs Newman
+* Runs the Postman collection
+* Uses CSV data
+* Logs output to GitHub Actions runner logs
 
 ---
 
-## Concepts and Learning Outcomes
+## Key Learning Areas Covered
 
-| Topic                                            | Status |
-| ------------------------------------------------ | ------ |
-| Manual API Testing via Postman                   | Done   |
-| Collection Runner with Iteration Data            | Done   |
-| Postman Test Assertions (Status, Response, Time) | Done   |
-| DRY Principle via Package Library                | Done   |
-| Exporting and Importing Functions (Node style)   | Done   |
-| Newman CLI for Local Test Execution              | Done   |
-| HTML Reports using `newman-reporter-html`        | Done   |
-| Git Initialization, Commit, and Push             | Done   |
-| CI with GitHub Actions for Automation            | Done   |
-| Creating Releases via GitHub                     | Done   |
+| Topic                               | Status    |
+| ----------------------------------- | --------- |
+| API testing with Postman            | Completed |
+| CSV data-driven testing             | Completed |
+| Collection Runner basics            | Completed |
+| Writing test scripts and assertions | Completed |
+| Using Postman Package Library       | Completed |
+| Exporting and importing functions   | Completed |
+| DRY principle in test automation    | Completed |
+| Newman CLI usage                    | Completed |
+| HTML report generation              | Completed |
+| GitHub repository setup             | Completed |
+| GitHub Actions CI integration       | Completed |
+| Creating a release                  | Completed |
 
 ---
 
 ## Troubleshooting
 
-### 1. Newman Reporter Not Found
-
-**Error**:
-
-```
-newman: could not find "cli,html" reporter
-```
-
-**Fix**:
-
-```bash
-npm install newman newman-reporter-html
-```
-
----
-
-### 2. PowerShell ExecutionPolicy Error
-
-**Fix**:
-
-```bash
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-```
-
----
-
-### 3. Git Push Rejected Due to Remote Changes
-
-**Fix**:
+**Push errors due to remote updates:**
 
 ```bash
 git pull origin main --rebase
 git push origin main
 ```
+
+**Missing Newman reporter:**
+
+```bash
+npm install newman-reporter-html
+```
+
+**PowerShell permission error (Windows):**
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
